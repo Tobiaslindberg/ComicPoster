@@ -97,7 +97,7 @@ namespace ComicPoster
             var cloudStorageFactory = new CloudStorageFactory();
             var cloudTableClient = cloudStorageFactory.CreateAndOpen();
 
-            var table = cloudTableClient.GetTableReference(ConfigurationManager.AppSettings["TableReference"]);
+            var table = cloudTableClient.GetTableReference(SettingsHelper.TableReference);
             table.CreateIfNotExists();
             return table;
         }
@@ -106,7 +106,7 @@ namespace ComicPoster
         {
             var message = new Message
             {
-                channel = ConfigurationManager.AppSettings["Channel"],
+                channel = SettingsHelper.Channel,
                 Username = "Comic poster",
                 Icon_emoji = ":newspaper:",
                 Mrkdwn = true,

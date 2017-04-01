@@ -1,4 +1,3 @@
-using System.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -10,7 +9,7 @@ namespace ComicPoster.Azure
 
         public CloudStorageFactory()
         {
-            _storageConnectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
+            _storageConnectionString = SettingsHelper.StorageConnectionString;
         }
 
         public CloudStorageAccount Create()

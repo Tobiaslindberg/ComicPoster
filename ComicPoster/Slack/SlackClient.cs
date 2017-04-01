@@ -23,7 +23,7 @@ namespace ComicPoster.Slack
 
             var data = Encoding.UTF8.GetBytes(serializeMessage);
 
-            var webRequest = WebRequest.Create(ConfigurationManager.AppSettings["SlackUrl"]);
+            var webRequest = WebRequest.Create(SettingsHelper.SlackUrl);
             webRequest.Method = "POST";
             webRequest.ContentLength = data.Length;
 
