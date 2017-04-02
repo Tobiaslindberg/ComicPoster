@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using ComicPoster.Common;
 using HtmlAgilityPack;
 
@@ -61,7 +62,7 @@ namespace ComicPoster.Smbc
 
                 comic.ComicImages.Add(new ComicImage
                 {
-                    AltText = altText,
+                    AltText = HttpUtility.HtmlDecode(altText),
                     ImageUrl = new Uri(src)
                 });
             }
