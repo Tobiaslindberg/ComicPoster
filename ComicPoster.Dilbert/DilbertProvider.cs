@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using ComicPoster.Common;
 using HtmlAgilityPack;
 
@@ -56,7 +57,7 @@ namespace ComicPoster.Dilbert
                 PermaLink = new Uri(comicUrl),
                 ComicUrl = new Uri(ComicUrl),
                 Id = comicUrl,
-                Title = comicTitle,
+                Title = HttpUtility.HtmlDecode(comicTitle),
                 ComicImages = new List<ComicImage>
                 {
                     new ComicImage
