@@ -11,37 +11,15 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace ComicPoster
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            if (string.IsNullOrEmpty(path))
-            {
-                Console.Error.WriteLine("Couldn't get current executing path");
-
-                return;
-            }
-            
-            var allAssemblies = Directory.GetFiles(path, "*.dll").Select(Assembly.LoadFile).ToList();
-
-            var providerTypes = allAssemblies
-                .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(IComicProvider).IsAssignableFrom(p) && !p.IsInterface)
-                .ToList();
+            var providerTypes = GetProviders();
 
             var slackClient = new SlackClient();
 
-            ITableService tableService;
-            if (SettingsHelper.UseTableService)
-            {
-                tableService = new CloudTableService();
-            }
-            else
-            {
-                tableService = new NullTableService();
-            }
+            var tableService = GetTableService();
 
             foreach (var providerType in providerTypes)
             {
@@ -70,6 +48,39 @@ namespace ComicPoster
                     Console.Out.WriteLine("Successfully updated last id in Azure Table");
                 }
             }
+        }
+
+        private static ITableService GetTableService()
+        {
+            ITableService tableService;
+            if (SettingsHelper.UseTableService)
+            {
+                tableService = new CloudTableService();
+            }
+            else
+            {
+                tableService = new NullTableService();
+            }
+            return tableService;
+        }
+
+        private static IEnumerable<Type> GetProviders()
+        {
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            if (string.IsNullOrEmpty(path))
+            {
+                Console.Error.WriteLine("Couldn't get current executing path");
+
+                throw new DirectoryNotFoundException("Could not find the path of current application");
+            }
+
+            var allAssemblies = Directory.GetFiles(path, "*.dll").Select(Assembly.LoadFile).ToList();
+
+            return allAssemblies
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeof (IComicProvider).IsAssignableFrom(p) && !p.IsInterface)
+                .ToList();
         }
 
         private static Message CreateMessage(Comic comic)
