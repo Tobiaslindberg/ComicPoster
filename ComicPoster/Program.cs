@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,7 @@ namespace ComicPoster
 
             if (string.IsNullOrEmpty(path))
             {
-                Console.Error.WriteLine($"Couldn't get current executing path");
+                Console.Error.WriteLine("Couldn't get current executing path");
 
                 return;
             }
@@ -33,14 +32,23 @@ namespace ComicPoster
                 .ToList();
 
             var slackClient = new SlackClient();
-            var table = GetCloudTable();
+
+            ITableService tableService;
+            if (SettingsHelper.UseTableService)
+            {
+                tableService = new CloudTableService();
+            }
+            else
+            {
+                tableService = new NullTableService();
+            }
 
             foreach (var providerType in providerTypes)
             {
                 Console.Out.WriteLine($"Running provider: {providerType.Name}");
                 var provider = (IComicProvider) Activator.CreateInstance(providerType);
 
-                var providerEntity = GetProviderEntity(providerType, table);
+                var providerEntity = tableService.GetProviderEntity(providerType.Name);
 
                 var comic = provider.DownloadComic(providerEntity?.LastId ?? string.Empty);
 
@@ -52,54 +60,16 @@ namespace ComicPoster
                 }
 
                 Console.Out.WriteLine($"Found a new comic from provider {providerType.Name}");
-                
                 var message = CreateMessage(comic);
                 var messageStatus = slackClient.Post(message);
-
-                providerEntity = UpdateProviderEntity(providerEntity, providerType.Name, comic);
 
                 if (messageStatus)
                 {
                     Console.Out.WriteLine("Successfully posted comic to slack");
-                    var insertOrReplaceOperation = TableOperation.InsertOrReplace(providerEntity);
-                    table.Execute(insertOrReplaceOperation);
+                    tableService.UpdateProviderEntity(providerEntity, providerType.Name, comic.Id);
                     Console.Out.WriteLine("Successfully updated last id in Azure Table");
                 }
             }
-        }
-
-        private static ProviderEntity UpdateProviderEntity(ProviderEntity providerEntity, string name, Comic comic)
-        {
-            if (providerEntity == null)
-            {
-                providerEntity = new ProviderEntity(name)
-                {
-                    LastId = comic.Id
-                };
-            }
-            else
-            {
-                providerEntity.LastId = comic.Id;
-            }
-            return providerEntity;
-        }
-
-        private static ProviderEntity GetProviderEntity(Type providerType, CloudTable table)
-        {
-            var retrieveOperation = TableOperation.Retrieve<ProviderEntity>("ComicPoster", providerType.Name);
-            var retrievedResult = table.Execute(retrieveOperation);
-            var providerEntity = (ProviderEntity) retrievedResult.Result;
-            return providerEntity;
-        }
-
-        private static CloudTable GetCloudTable()
-        {
-            var cloudStorageFactory = new CloudStorageFactory();
-            var cloudTableClient = cloudStorageFactory.CreateAndOpen();
-
-            var table = cloudTableClient.GetTableReference(SettingsHelper.TableReference);
-            table.CreateIfNotExists();
-            return table;
         }
 
         private static Message CreateMessage(Comic comic)

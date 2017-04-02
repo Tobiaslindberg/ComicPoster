@@ -8,5 +8,14 @@ namespace ComicPoster
         public static string Channel => ConfigurationManager.AppSettings["Channel"];
         public static string StorageConnectionString => ConfigurationManager.AppSettings["StorageConnectionString"];
         public static string SlackUrl => ConfigurationManager.AppSettings["SlackUrl"];
+
+        public static bool UseTableService
+        {
+            get
+            {
+                bool result;
+                return bool.TryParse(ConfigurationManager.AppSettings["SlackUrl"], out result) && result;
+            }
+        }
     }
 }

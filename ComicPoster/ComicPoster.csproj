@@ -104,6 +104,9 @@
   <ItemGroup>
     <Compile Include="Azure\CloudStorageFactory.cs" />
     <Compile Include="Azure\ProviderEntity.cs" />
+    <Compile Include="CloudTableService.cs" />
+    <Compile Include="ITableService.cs" />
+    <Compile Include="NullTableService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsHelper.cs" />
