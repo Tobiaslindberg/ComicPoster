@@ -14,7 +14,7 @@ namespace ComicPoster
             get
             {
                 bool result;
-                return bool.TryParse(ConfigurationManager.AppSettings["SlackUrl"], out result) && result;
+                return bool.TryParse(ConfigurationManager.AppSettings["UseTableService"], out result) && result;
             }
         }
     }
