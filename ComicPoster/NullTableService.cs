@@ -19,6 +19,10 @@ namespace ComicPoster
             };
         }
 
+        public void DeleteAllProviders()
+        {
+        }
+
         public void UpdateProviderEntity(ProviderEntity providerEntity, string name, string id)
         {
         }

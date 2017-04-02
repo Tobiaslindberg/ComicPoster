@@ -4,10 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using ComicPoster.Azure;
 using ComicPoster.Common;
 using ComicPoster.Slack;
-using Microsoft.WindowsAzure.Storage.Table;
 
 namespace ComicPoster
 {
@@ -109,16 +107,6 @@ namespace ComicPoster
                 message.Attachments.Add(attachment);
             }
             return message;
-        }
-
-        private static void DeleteAllProviderEntities(CloudTable table)
-        {
-            var query = new TableQuery<ProviderEntity>();
-            var result = table.ExecuteQuery(query);
-            foreach (var providerEntity in result)
-            {
-                table.Execute(TableOperation.Delete(providerEntity));
-            }
         }
 
         private static IEnumerable<Type> GetProvidersFromPluginFolder()

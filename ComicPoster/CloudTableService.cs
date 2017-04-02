@@ -33,6 +33,16 @@ namespace ComicPoster
             return providerEntity;
         }
 
+        public void DeleteAllProviders()
+        {
+            var query = new TableQuery<ProviderEntity>();
+            var result = _table.ExecuteQuery(query);
+            foreach (var providerEntity in result)
+            {
+                _table.Execute(TableOperation.Delete(providerEntity));
+            }
+        }
+
         public void UpdateProviderEntity(ProviderEntity providerEntity, string name, string id)
         {
             if (providerEntity == null)

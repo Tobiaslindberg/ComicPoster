@@ -7,6 +7,7 @@ namespace ComicPoster
     {
         CloudTable GetCloudTable();
         ProviderEntity GetProviderEntity(string name);
+        void DeleteAllProviders();
         void UpdateProviderEntity(ProviderEntity providerEntity, string name, string id);
     }
 }
