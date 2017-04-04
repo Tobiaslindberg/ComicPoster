@@ -39,6 +39,11 @@ namespace ComicPoster.Smbc
             {
                 title = "..";
             }
+            else
+            {
+                title = title.Replace("-", " ");
+                title = title.First().ToString().ToUpper() + title.Substring(1);
+            }
 
             var comic = new Comic
             {
