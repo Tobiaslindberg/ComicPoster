@@ -96,7 +96,7 @@ namespace ComicPoster
             {
                 var attachment = new Attachment
                 {
-                    image_url = comicImage.ImageUrl.ToString(),
+                    image_url = comicImage.ImageUrl.ToString().Replace(" ", "%20"),
                     text = $"{comicImage.AltText}",
                     author_link = comic.ComicUrl.ToString(),
                     author_name = $"{comic.Name}",
