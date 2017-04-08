@@ -14,12 +14,10 @@ namespace ComicPoster.Dilbert
 
         public Comic DownloadComic(string oldId)
         {
-            var webclient = new WebClient();
-            var html = webclient.DownloadString(ComicUrl);
+            var document = DownloadDocument();
 
-            var document = new HtmlDocument();
-            document.LoadHtml(html);
             var comicBody = document.GetElementbyId("js_comics");
+
             var comicDiv =
                 comicBody.Descendants()
                     .FirstOrDefault(
@@ -27,15 +25,16 @@ namespace ComicPoster.Dilbert
                             x.Attributes.Any(
                                 y => y.Value.Equals("img-comic-container", StringComparison.OrdinalIgnoreCase)));
 
+            var comicTitle = comicBody.Descendants()
+                .FirstOrDefault(
+                    x => x.Attributes.Any(y => y.Value.Equals("comic-title-name", StringComparison.OrdinalIgnoreCase)))?
+                .InnerText;
+
             var imageContainter = comicDiv?.ChildNodes
                 .FirstOrDefault(x => x.Name.Equals("a", StringComparison.OrdinalIgnoreCase));
             var imageNode = imageContainter?.ChildNodes
                 .FirstOrDefault(x => x.Name.Equals("img", StringComparison.OrdinalIgnoreCase));
 
-            var comicTitle = comicBody.Descendants()
-                .FirstOrDefault(
-                    x => x.Attributes.Any(y => y.Value.Equals("comic-title-name", StringComparison.OrdinalIgnoreCase)))?
-                .InnerText;
             var imageUrl =imageNode?.Attributes
                 .FirstOrDefault(x => x.Name.Equals("src", StringComparison.OrdinalIgnoreCase))?
                     .Value;
@@ -69,6 +68,16 @@ namespace ComicPoster.Dilbert
             };
 
             return comic;
+        }
+
+        private static HtmlDocument DownloadDocument()
+        {
+            var webclient = new WebClient();
+            var html = webclient.DownloadString(ComicUrl);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(html);
+            return document;
         }
     }
 }
