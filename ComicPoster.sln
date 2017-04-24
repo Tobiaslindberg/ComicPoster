@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicPoster.Xkcd", "ComicPo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicPoster.Dilbert", "ComicPoster.Dilbert\ComicPoster.Dilbert.csproj", "{E71154A1-9F63-468B-A6ED-4D6FC209C257}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicPoster.Turnoffus", "ComicPoster.Turnoffus\ComicPoster.Turnoffus.csproj", "{EF4BE550-DF36-4F5F-8D35-BB5B3A02C9DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E71154A1-9F63-468B-A6ED-4D6FC209C257}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E71154A1-9F63-468B-A6ED-4D6FC209C257}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E71154A1-9F63-468B-A6ED-4D6FC209C257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF4BE550-DF36-4F5F-8D35-BB5B3A02C9DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF4BE550-DF36-4F5F-8D35-BB5B3A02C9DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF4BE550-DF36-4F5F-8D35-BB5B3A02C9DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF4BE550-DF36-4F5F-8D35-BB5B3A02C9DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

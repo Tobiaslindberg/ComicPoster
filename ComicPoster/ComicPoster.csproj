@@ -142,6 +142,10 @@
       <Project>{53d54bcd-6841-4517-9516-3ab590aa4f4d}</Project>
       <Name>ComicPoster.Smbc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ComicPoster.Turnoffus\ComicPoster.Turnoffus.csproj">
+      <Project>{ef4be550-df36-4f5f-8d35-bb5b3a02c9de}</Project>
+      <Name>ComicPoster.Turnoffus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ComicPoster.Xkcd\ComicPoster.Xkcd.csproj">
       <Project>{797ba43a-224e-4a74-ac50-d90faf5e772d}</Project>
       <Name>ComicPoster.Xkcd</Name>
