@@ -69,7 +69,7 @@ namespace ComicPoster.Smbc
             return new ComicImage
             {
                 AltText = HttpUtility.HtmlDecode(altText),
-                ImageUrl = new Uri(src)
+                ImageUrl = new Uri(new Uri(ComicUrl), src)
             };
         }
 
