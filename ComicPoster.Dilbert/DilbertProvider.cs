@@ -50,6 +50,15 @@ namespace ComicPoster.Dilbert
                 return null;
             }
 
+            var newImageUrl = imageUrl;
+            if (!imageUrl.Contains("http://") && !imageUrl.Contains("https://"))
+            {
+                if (imageUrl.StartsWith("//"))
+                    newImageUrl = "https:" + imageUrl;
+            }
+
+            var imageUri = new Uri(newImageUrl);
+
             var comic = new Comic
             {
                 Name = "Dilbert",
@@ -62,7 +71,7 @@ namespace ComicPoster.Dilbert
                     new ComicImage
                     {
                         AltText = null,
-                        ImageUrl = new Uri(imageUrl)
+                        ImageUrl = imageUri
                     }
                 }
             };
